@@ -6,18 +6,6 @@ type Node struct {
 	Data int
 }
 
-func (n *Node) Insert(value int) *Node {
-	node := &Node{
-		Prev: n,
-		Next: nil,
-		Data: value,
-	}
-	if n == nil {
-		n.Next = node
-	}
-	return node
-}
-
 func main() {
 
 }
