@@ -15,15 +15,26 @@ import "fmt"
 //示例 3：
 //输入：nums = [3,3], target = 6
 //输出：[0,1]
+//
+//func TwoSum(nums []int, target int) []int {
+//	result := make(map[int]int)
+//	for i, num := range nums {
+//		diff := target - num
+//		if j, ok := result[diff]; ok {
+//			return []int{i, j}
+//		}
+//		result[num] = i
+//	}
+//	return nil
+//}
 
 func TwoSum(nums []int, target int) []int {
-	result := make(map[int]int)
+	numsMap := make(map[int]int)
 	for i, num := range nums {
-		diff := target - num
-		if j, ok := result[diff]; ok {
+		if j, found := numsMap[target-num]; found {
 			return []int{i, j}
 		}
-		result[num] = i
+		numsMap[num] = i
 	}
 	return nil
 }
