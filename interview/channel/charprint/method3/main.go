@@ -15,19 +15,39 @@ var done = make(chan struct{})
 func PrintA() {
 	defer wg.Done()
 
-	for v := range q {
-		<-notifyA
-		fmt.Println("A:", v)
-		notifyB <- struct{}{}
+	for {
+		select {
+		case <-notifyA:
+			v, ok := <-q
+			if !ok {
+				done <- struct{}{}
+				return
+			}
+			fmt.Println("A:", v)
+			notifyB <- struct{}{}
+		case <-done:
+			close(notifyB)
+			return
+		}
 	}
 }
 
 func PrintB() {
 	defer wg.Done()
-	for v := range q {
-		<-notifyB
-		fmt.Println("B:", v)
-		notifyA <- struct{}{}
+	for {
+		select {
+		case <-notifyB:
+			v, ok := <-q
+			if !ok {
+				done <- struct{}{}
+				return
+			}
+			fmt.Println("B:", v)
+			notifyA <- struct{}{}
+		case <-done:
+			close(notifyA)
+			return
+		}
 	}
 }
 
