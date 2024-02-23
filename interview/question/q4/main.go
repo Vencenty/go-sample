@@ -2,23 +2,21 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func main() {
 
-	str := "1234"
-	s := reserveString(str)
-	fmt.Println(s)
+	arr := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+	binarySort(arr, 1)
 
+	s := "hello"
+	fmt.Println(strings.Index(s, "l"), strings.LastIndex(s, "l"))
 }
 
-// 反转一个字符串
-func reserveString(str string) string {
-	l := len(str)    //5
-	s := []rune(str) // 这里面有坑，string不能直接反转
-	for i := 0; i < l/2; i++ {
-		s[i], s[l-i-1] = s[l-i-1], s[i]
-	}
-	return string(s)
+func binarySort(arr []int, target int) {
+	l := len(arr)
 
+	for i := 0; i < l/2; i++ {
+	}
 }
