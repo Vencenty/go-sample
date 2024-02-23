@@ -7,28 +7,40 @@ import (
 
 var notifyA = make(chan struct{})
 var notifyB = make(chan struct{})
-var s = "abcdefg"
+var s = "abc"
 var wg sync.WaitGroup
 var q = make(chan string, len(s))
 var done = make(chan struct{})
 
 func PrintA() {
+	defer func() {
+		r := recover()
+		fmt.Println("recoverA", r)
+	}()
 	defer wg.Done()
 
+	<-notifyA
 	for v := range q {
-		<-notifyA
 		fmt.Println("A:", v)
 		notifyB <- struct{}{}
 	}
+	close(notifyB)
 }
 
 func PrintB() {
+	defer func() {
+		r := recover()
+		fmt.Println("recoverB", r)
+	}()
 	defer wg.Done()
+
 	for v := range q {
 		<-notifyB
 		fmt.Println("B:", v)
 		notifyA <- struct{}{}
 	}
+	close(notifyA)
+
 }
 
 func main() {
